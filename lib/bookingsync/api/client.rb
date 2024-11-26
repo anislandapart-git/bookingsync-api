@@ -39,7 +39,7 @@ require "bookingsync/api/client/rental_agreements"
 require "bookingsync/api/client/rental_cancelation_policies"
 require "bookingsync/api/client/rental_cancelation_policy_items"
 require "bookingsync/api/client/rentals_contents_overrides"
-require "bookingsync/api/client/rental_tags"
+require "bookingsync/api/client/rentals_tags"
 require "bookingsync/api/client/rental_urls"
 require "bookingsync/api/client/review_replies"
 require "bookingsync/api/client/reviews"
@@ -104,7 +104,7 @@ module BookingSync::API
     include BookingSync::API::Client::RentalCancelationPolicies
     include BookingSync::API::Client::RentalCancelationPolicyItems
     include BookingSync::API::Client::RentalsContentsOverrides
-    include BookingSync::API::Client::RentalTags
+    include BookingSync::API::Client::RentalsTags
     include BookingSync::API::Client::RentalUrls
     include BookingSync::API::Client::ReviewReplies
     include BookingSync::API::Client::Reviews
