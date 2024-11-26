@@ -39,6 +39,7 @@ require "bookingsync/api/client/rental_agreements"
 require "bookingsync/api/client/rental_cancelation_policies"
 require "bookingsync/api/client/rental_cancelation_policy_items"
 require "bookingsync/api/client/rentals_contents_overrides"
+require "bookingsync/api/client/rental_tags"
 require "bookingsync/api/client/rental_urls"
 require "bookingsync/api/client/review_replies"
 require "bookingsync/api/client/reviews"
@@ -103,6 +104,7 @@ module BookingSync::API
     include BookingSync::API::Client::RentalCancelationPolicies
     include BookingSync::API::Client::RentalCancelationPolicyItems
     include BookingSync::API::Client::RentalsContentsOverrides
+    include BookingSync::API::Client::RentalTags
     include BookingSync::API::Client::RentalUrls
     include BookingSync::API::Client::ReviewReplies
     include BookingSync::API::Client::Reviews
@@ -111,7 +113,7 @@ module BookingSync::API
     include BookingSync::API::Client::Sources
     include BookingSync::API::Client::Taxes
 
-    MEDIA_TYPE = "application/vnd.api+json"
+    MEDIA_TYPE = "application/vnd.api+json".freeze
 
     attr_reader :token, :logger, :pagination_first_response, :last_response
 
@@ -241,11 +243,11 @@ module BookingSync::API
           request_method: options.delete(:request_method) || :get
         }
 
-        if block_given?
-          data = fetch_with_block(path, options, request_settings, &block)
-        else
-          data = fetch_with_paginate(path, options, request_settings)
-        end
+        data = if block_given?
+                 fetch_with_block(path, options, request_settings, &block)
+               else
+                 fetch_with_paginate(path, options, request_settings)
+               end
 
         data
       end
@@ -360,13 +362,13 @@ module BookingSync::API
     def handle_response(faraday_response)
       @last_response = response = Response.new(self, faraday_response)
       case response.status
-      when 204; nil # destroy/cancel
-      when 200..299; response
-      when 401; raise Unauthorized.new(response)
-      when 403; raise Forbidden.new(response)
-      when 404; raise NotFound.new(response)
-      when 422; raise UnprocessableEntity.new(response)
-      when 429; raise RateLimitExceeded.new(response)
+      when 204 then nil # destroy/cancel
+      when 200..299 then response
+      when 401 then raise Unauthorized.new(response)
+      when 403 then raise Forbidden.new(response)
+      when 404 then raise NotFound.new(response)
+      when 422 then raise UnprocessableEntity.new(response)
+      when 429 then raise RateLimitExceeded.new(response)
       else raise UnsupportedResponse.new(response)
       end
     end
@@ -397,30 +399,32 @@ module BookingSync::API
     end
 
     def fetch_with_paginate(path, options, request_settings, data = [], response = nil)
-      response = initial_call(path, options, request_settings) unless response
+      response ||= initial_call(path, options, request_settings)
       data.concat(response.resources)
       if response.relations[:next] && request_settings[:auto_paginate]
-        fetch_with_paginate(path, options, request_settings, data, next_page(response, request_settings))
+        fetch_with_paginate(path, options, request_settings, data,
+                            next_page(response, request_settings))
       else
         data
       end
     end
 
     def fetch_with_block(path, options, request_settings, response = nil, &block)
-      response = initial_call(path, options, request_settings) unless response
+      response ||= initial_call(path, options, request_settings)
       block.call(response.resources)
-      if response.relations[:next]
-        fetch_with_block(path, options, request_settings, next_page(response, request_settings), &block)
-      end
+      return unless response.relations[:next]
+
+      fetch_with_block(path, options, request_settings, next_page(response, request_settings),
+                       &block)
     end
 
     def initial_call(path, options, request_settings)
       request_method = request_settings[:request_method]
-      if request_method == :get
-        response = call(request_method, path, query: options)
-      else
-        response = call(request_method, path, options)
-      end
+      response = if request_method == :get
+                   call(request_method, path, query: options)
+                 else
+                   call(request_method, path, options)
+                 end
       @pagination_first_response = response
     end
 
