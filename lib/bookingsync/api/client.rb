@@ -22,6 +22,7 @@ require "bookingsync/api/client/host_reviews"
 require "bookingsync/api/client/hosts"
 require "bookingsync/api/client/inquiries"
 require "bookingsync/api/client/living_rooms"
+require "bookingsync/api/client/los_records"
 require "bookingsync/api/client/nightly_rate_maps"
 require "bookingsync/api/client/strict_bookings"
 require "bookingsync/api/client/periods"
@@ -85,6 +86,7 @@ module BookingSync::API
     include BookingSync::API::Client::HostReviews
     include BookingSync::API::Client::Inquiries
     include BookingSync::API::Client::LivingRooms
+    include BookingSync::API::Client::LosRecords
     include BookingSync::API::Client::Messages
     include BookingSync::API::Client::NightlyRateMaps
     include BookingSync::API::Client::StrictBookings
