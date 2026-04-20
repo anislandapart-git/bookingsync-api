@@ -5,8 +5,8 @@ module BookingSync::API
         paginate :mid_term_rate_maps, options, &block
       end
 
-      def mid_term_rate_map(mid_term_rate_map)
-        get("mid_term_rate_maps/#{mid_term_rate_map}").pop
+      def mid_term_rate_map(options = {})
+        get("mid_term_rate_maps/#{options.delete('rental')}").pop
       end
     end
   end
