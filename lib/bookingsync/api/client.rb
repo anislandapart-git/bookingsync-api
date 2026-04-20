@@ -1,63 +1,64 @@
-require "bookingsync/api/middleware/logger"
-require "bookingsync/api/client/accounts"
-require "bookingsync/api/client/amenities"
-require "bookingsync/api/client/applications"
-require "bookingsync/api/client/applications_periods_rentals"
-require "bookingsync/api/client/attachments"
-require "bookingsync/api/client/availabilities"
-require "bookingsync/api/client/bathrooms"
-require "bookingsync/api/client/bedrooms"
-require "bookingsync/api/client/bookings"
-require "bookingsync/api/client/booking_comments"
-require "bookingsync/api/client/bookings_fees"
-require "bookingsync/api/client/bookings_payments"
-require "bookingsync/api/client/bookings_tags"
-require "bookingsync/api/client/bookings_taxes"
-require "bookingsync/api/client/change_overs"
-require "bookingsync/api/client/clients"
-require "bookingsync/api/client/contacts"
-require "bookingsync/api/client/destinations"
-require "bookingsync/api/client/fees"
-require "bookingsync/api/client/host_reviews"
-require "bookingsync/api/client/hosts"
-require "bookingsync/api/client/inquiries"
-require "bookingsync/api/client/living_rooms"
-require "bookingsync/api/client/los_records"
-require "bookingsync/api/client/nightly_rate_maps"
-require "bookingsync/api/client/strict_bookings"
-require "bookingsync/api/client/periods"
-require "bookingsync/api/client/payments"
-require "bookingsync/api/client/payment_gateways"
-require "bookingsync/api/client/preferences_general_settings"
-require "bookingsync/api/client/photos"
-require "bookingsync/api/client/rates"
-require "bookingsync/api/client/rates_rules"
-require "bookingsync/api/client/rates_tables"
-require "bookingsync/api/client/rentals"
-require "bookingsync/api/client/rentals_fees"
-require "bookingsync/api/client/rentals_amenities"
-require "bookingsync/api/client/rental_agreements"
-require "bookingsync/api/client/rental_cancelation_policies"
-require "bookingsync/api/client/rental_cancelation_policy_items"
-require "bookingsync/api/client/rentals_contents_overrides"
-require "bookingsync/api/client/rentals_tags"
-require "bookingsync/api/client/rental_urls"
-require "bookingsync/api/client/review_replies"
-require "bookingsync/api/client/reviews"
-require "bookingsync/api/client/seasons"
-require "bookingsync/api/client/special_offers"
-require "bookingsync/api/client/sources"
-require "bookingsync/api/client/taxes"
-require "bookingsync/api/client/conversations"
-require "bookingsync/api/client/messages"
-require "bookingsync/api/client/participants"
-require "bookingsync/api/error"
-require "bookingsync/api/relation"
-require "bookingsync/api/response"
-require "bookingsync/api/resource"
-require "bookingsync/api/serializer"
-require "logger"
-require "addressable/template"
+require 'bookingsync/api/middleware/logger'
+require 'bookingsync/api/client/accounts'
+require 'bookingsync/api/client/amenities'
+require 'bookingsync/api/client/applications'
+require 'bookingsync/api/client/applications_periods_rentals'
+require 'bookingsync/api/client/attachments'
+require 'bookingsync/api/client/availabilities'
+require 'bookingsync/api/client/bathrooms'
+require 'bookingsync/api/client/bedrooms'
+require 'bookingsync/api/client/bookings'
+require 'bookingsync/api/client/booking_comments'
+require 'bookingsync/api/client/bookings_fees'
+require 'bookingsync/api/client/bookings_payments'
+require 'bookingsync/api/client/bookings_tags'
+require 'bookingsync/api/client/bookings_taxes'
+require 'bookingsync/api/client/change_overs'
+require 'bookingsync/api/client/clients'
+require 'bookingsync/api/client/contacts'
+require 'bookingsync/api/client/destinations'
+require 'bookingsync/api/client/fees'
+require 'bookingsync/api/client/host_reviews'
+require 'bookingsync/api/client/hosts'
+require 'bookingsync/api/client/inquiries'
+require 'bookingsync/api/client/living_rooms'
+require 'bookingsync/api/client/los_records'
+require 'bookingsync/api/client/mid_term_rate_maps'
+require 'bookingsync/api/client/nightly_rate_maps'
+require 'bookingsync/api/client/strict_bookings'
+require 'bookingsync/api/client/periods'
+require 'bookingsync/api/client/payments'
+require 'bookingsync/api/client/payment_gateways'
+require 'bookingsync/api/client/preferences_general_settings'
+require 'bookingsync/api/client/photos'
+require 'bookingsync/api/client/rates'
+require 'bookingsync/api/client/rates_rules'
+require 'bookingsync/api/client/rates_tables'
+require 'bookingsync/api/client/rentals'
+require 'bookingsync/api/client/rentals_fees'
+require 'bookingsync/api/client/rentals_amenities'
+require 'bookingsync/api/client/rental_agreements'
+require 'bookingsync/api/client/rental_cancelation_policies'
+require 'bookingsync/api/client/rental_cancelation_policy_items'
+require 'bookingsync/api/client/rentals_contents_overrides'
+require 'bookingsync/api/client/rentals_tags'
+require 'bookingsync/api/client/rental_urls'
+require 'bookingsync/api/client/review_replies'
+require 'bookingsync/api/client/reviews'
+require 'bookingsync/api/client/seasons'
+require 'bookingsync/api/client/special_offers'
+require 'bookingsync/api/client/sources'
+require 'bookingsync/api/client/taxes'
+require 'bookingsync/api/client/conversations'
+require 'bookingsync/api/client/messages'
+require 'bookingsync/api/client/participants'
+require 'bookingsync/api/error'
+require 'bookingsync/api/relation'
+require 'bookingsync/api/response'
+require 'bookingsync/api/resource'
+require 'bookingsync/api/serializer'
+require 'logger'
+require 'addressable/template'
 
 module BookingSync::API
   class Client
@@ -116,7 +117,7 @@ module BookingSync::API
     include BookingSync::API::Client::Sources
     include BookingSync::API::Client::Taxes
 
-    MEDIA_TYPE = "application/vnd.api+json".freeze
+    MEDIA_TYPE = 'application/vnd.api+json'.freeze
 
     attr_reader :token, :logger, :pagination_first_response, :last_response
 
@@ -195,7 +196,7 @@ module BookingSync::API
     #
     # @return [String] URL to API endpoint
     def api_endpoint
-      URI.join(base_url, "api/v3").to_s
+      URI.join(base_url, 'api/v3').to_s
     end
 
     # Encode an object to a string for the API request.
@@ -223,7 +224,7 @@ module BookingSync::API
     # @param options [Hash] A customizable set of request options.
     # @return [Array<BookingSync::API::Resource>] Array of resources.
     def request(method, path, data = nil, options = nil)
-      instrument("request.bookingsync_api", method: method, path: path) do
+      instrument('request.bookingsync_api', method: method, path: path) do
         response = call(method, path, data, options)
         response.respond_to?(:resources) ? response.resources : response
       end
@@ -240,7 +241,7 @@ module BookingSync::API
     # @yieldreturn [Array<BookingSync::API::Resource>] Batch of resources
     # @return [Array<BookingSync::API::Resource>] Batch of resources
     def paginate(path, options = {}, &block)
-      instrument("paginate.bookingsync_api", path: path) do
+      instrument('paginate.bookingsync_api', path: path) do
         request_settings = {
           auto_paginate: options.delete(:auto_paginate),
           request_method: options.delete(:request_method) || :get
@@ -265,24 +266,22 @@ module BookingSync::API
     # @param options [Hash] A customizable set of request options.
     # @return [BookingSync::API::Response] A Response object.
     def call(method, path, data = nil, options = nil)
-      instrument("call.bookingsync_api", method: method, path: path) do
-        if [:get, :head].include?(method)
+      instrument('call.bookingsync_api', method: method, path: path) do
+        if %i[get head].include?(method)
           options = data
           data = {}
         end
         options ||= {}
         options[:headers] ||= {}
-        options[:headers]["Authorization"] = "Bearer #{token}"
+        options[:headers]['Authorization'] = "Bearer #{token}"
 
         if options.has_key?(:query)
           if options[:query].has_key?(:ids)
-            ids = Array(options[:query].delete(:ids)).join(",")
+            ids = Array(options[:query].delete(:ids)).join(',')
             path = "#{path}/#{ids}"
           end
           options[:query].keys.each do |key|
-            if options[:query][key].is_a?(Array)
-              options[:query][key] = options[:query][key].join(",")
-            end
+            options[:query][key] = options[:query][key].join(',') if options[:query][key].is_a?(Array)
           end
         end
 
@@ -333,7 +332,7 @@ module BookingSync::API
     #
     # @return [String] Base URL to BookingSync
     def base_url
-      @base_url || ENV.fetch("BOOKINGSYNC_URL", "https://www.bookingsync.com")
+      @base_url || ENV.fetch('BOOKINGSYNC_URL', 'https://www.bookingsync.com')
     end
 
     # Return true if SSL cert should be verified
@@ -343,7 +342,7 @@ module BookingSync::API
     # @return [Boolean] true if SSL needs to be verified
     # false otherwise
     def verify_ssl?
-      ENV["BOOKINGSYNC_VERIFY_SSL"] != "false"
+      ENV['BOOKINGSYNC_VERIFY_SSL'] != 'false'
     end
 
     # Expand an URL template into a full URL
@@ -377,7 +376,7 @@ module BookingSync::API
     end
 
     def debug?
-      ENV["BOOKINGSYNC_API_DEBUG"] == "true"
+      ENV['BOOKINGSYNC_API_DEBUG'] == 'true'
     end
 
     # Return default logger. By default we don't log anywhere.
@@ -436,7 +435,7 @@ module BookingSync::API
     end
 
     def reject_blank_values(array)
-      array.reject { |value| value.nil? || value == "" }
+      array.reject { |value| value.nil? || value == '' }
     end
   end
 end
