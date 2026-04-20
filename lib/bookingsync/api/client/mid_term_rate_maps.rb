@@ -6,7 +6,7 @@ module BookingSync::API
       end
 
       def mid_term_rate_map(options = {})
-        get("mid_term_rate_maps/#{options.delete('rental')}").pop
+        get("mid_term_rate_maps/#{options.delete('rental_id')}").pop
       end
     end
   end
