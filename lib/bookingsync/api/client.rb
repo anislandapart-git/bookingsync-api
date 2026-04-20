@@ -88,6 +88,7 @@ module BookingSync::API
     include BookingSync::API::Client::LivingRooms
     include BookingSync::API::Client::LosRecords
     include BookingSync::API::Client::Messages
+    include BookingSync::API::Client::MidTermRateMaps
     include BookingSync::API::Client::NightlyRateMaps
     include BookingSync::API::Client::StrictBookings
     include BookingSync::API::Client::Participants
