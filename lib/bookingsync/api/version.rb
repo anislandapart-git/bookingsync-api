@@ -1,5 +1,5 @@
 module BookingSync
   module API
-    VERSION = '1.2.6-aia'
+    VERSION = '1.2.7-aia'
   end
 end
